@@ -1,0 +1,24 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
+COPY backend/requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+RUN pip install dvc[all]
+
+COPY backend/app/ app/
+COPY ml/ /app/ml/
+COPY .dvc/ /app/.dvc/
+COPY .dvcignore /app/
+COPY .git/ /app/.git/
+
+
+ENV DVC_NO_ANALYTICS=1
+
+RUN dvc pull -v
+
+EXPOSE 8000
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
