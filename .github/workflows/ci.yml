@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r backend/requirements.txt
+        pip install dvc[all]
+
+    - name: DVC Pull
+      run: |
+        dvc pull
+      env:
+        GIT_USER: ${{ secrets.GIT_USER }}
+        GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+
+    - name: Check FastAPI app syntax
+      run: |
+        python -m py_compile backend/app/*.py
+
+    - name: Build Docker image
+      run: |
+        docker build -f backend/Dockerfile -t house-price-backend .
