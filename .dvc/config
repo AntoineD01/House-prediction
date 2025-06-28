@@ -1,0 +1,4 @@
+[core]
+    remote = storage
+['remote "storage"']
+    url = https://dagshub.com/AntoineD01/House-prediction.dvc
