@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import numpy as np
-from app import model_loader
-
+from app.model_loader import load_model, load_columns
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="House Price Prediction API")
 
@@ -32,4 +32,12 @@ def predict_price(data: HouseFeatures):
     input_data = np.array(data.features).reshape(1, -1)
     prediction = model.predict(input_data)[0]
     return {"predicted_price": float(prediction)}
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
