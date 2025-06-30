@@ -1,17 +1,15 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import numpy as np
-
 from app.model_loader import load_model, load_columns
 from fastapi.middleware.cors import CORSMiddleware
-
 
 app = FastAPI(title="House Price Prediction API")
 
 # Load model and expected columns at startup
-model = load_model()
-expected_columns = load_columns()
-expected_feature_count = len(expected_columns)
+model = model_loader.load_model()
+columns = model_loader.load_columns()
+expected_feature_count = len(columns)
 
 class HouseFeatures(BaseModel):
     features: list
@@ -22,7 +20,7 @@ def read_root():
 
 @app.get("/expected-features")
 def get_expected_features():
-    return {"columns": expected_columns}
+    return {"columns": columns}
 
 @app.post("/predict")
 def predict_price(data: HouseFeatures):
