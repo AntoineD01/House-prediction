@@ -7,8 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(title="House Price Prediction API")
 
 # Load model and expected columns at startup
-model = model_loader.load_model()
-columns = model_loader.load_columns()
+model = load_model()
+columns = load_columns()
 expected_feature_count = len(columns)
 
 class HouseFeatures(BaseModel):
