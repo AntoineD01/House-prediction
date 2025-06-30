@@ -2,14 +2,10 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install requirements
 COPY backend/requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app code and model
-COPY backend/app /app/app
-COPY ml /app/ml
+COPY backend/ /app/
 
 EXPOSE 8000
 
