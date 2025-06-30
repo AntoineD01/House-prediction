@@ -36,9 +36,3 @@ jobs:
     - name: Build Docker image
       run: |
         docker build -f backend/Dockerfile -t house-price-backend .
-
-    # OPTIONAL: Add deployment to staging platform here
-    # - name: Deploy to Railway Staging
-    #   run: railway up --env=staging
-    #   env:
-    #     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

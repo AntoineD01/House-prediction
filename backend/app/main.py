@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import numpy as np
-from app.model_loader import load_model, load_columns
+from backend.app.model_loader import load_model, load_columns
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="House Price Prediction API")
