@@ -20,15 +20,14 @@ export default function PredictForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // LOCAL FastAPI backend
-  const API_URL = 'http://127.0.0.1:8000';
+  const API_URL = 'https://presidential-whippet-antoined01-23d35c7d.koyeb.app';
 
   // On mount: fetch expected columns from FastAPI
   useEffect(() => {
     fetch(`${API_URL}/expected-features`)
       .then(res => res.json())
       .then(data => {
-        setColumns(data.columns);
+        setColumns(data.columns || []);
         const initial = {};
         data.columns.forEach(col => initial[col] = '');
         setInputs(initial);
