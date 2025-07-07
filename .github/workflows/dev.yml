@@ -1,0 +1,22 @@
+name: Promote to Staging
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Git
+        run: |
+          git config user.name "ci-bot"
+          git config user.email "ci-bot@example.com"
+      - name: Merge dev into staging
+        run: |
+          git checkout staging
+          git merge dev --no-ff -m "CI: Merge dev into staging [skip ci]"
+          git push origin staging
