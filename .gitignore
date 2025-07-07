@@ -1,2 +1,4 @@
 /train.csv
 /processed_train.csv
+.vscode/
+node_modules/
