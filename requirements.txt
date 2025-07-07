@@ -1,7 +1,7 @@
 fastapi
 uvicorn
-scikit-learn
 joblib
+scikit-learn
 xgboost
 pydantic
 dvc

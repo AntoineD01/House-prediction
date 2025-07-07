@@ -33,6 +33,14 @@ jobs:
       run: |
         python -m py_compile backend/app/*.py
 
+    - name: Run integration tests
+      run: |
+        python -m pytest backend/tests/test_integration_app.py
+
     - name: Build Docker image (validation)
       run: |
         docker build -f backend/Dockerfile -t house-price-backend .
+
+    - name: Run integration tests
+      run: |
+        python -m pytest backend/tests/test_integration_app.py

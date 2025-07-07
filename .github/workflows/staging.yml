@@ -10,7 +10,9 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Important pour avoir tout l'historique
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -21,6 +23,7 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install -r backend/requirements.txt
+        pip install pytest
         pip install dvc[all]
 
     - name: DVC Pull
@@ -31,14 +34,20 @@ jobs:
 
     - name: Run all tests
       run: |
+        # Syntax check
         python -m py_compile backend/app/*.py
+        # Run ALL tests
+        python -m pytest backend/tests
 
     - name: Build Docker image
       run: |
         docker build -f backend/Dockerfile -t house-price-backend .
 
-    # OPTIONAL: Add deployment to staging platform here
-    # - name: Deploy to Railway Staging
-    #   run: railway up --env=staging
-    #   env:
-    #     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    - name: Promote to production
+      run: |
+        git config user.name "ci-bot"
+        git config user.email "ci-bot@example.com"
+        git fetch origin
+        git checkout main
+        git merge staging --no-ff -m "CI: Promote staging to main [skip ci]"
+        git push origin main
